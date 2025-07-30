@@ -55,18 +55,6 @@ Este foi um projeto realizado como parte do Bootcamp [Re]Start Data Girls, da tr
 
 ---
 
-### 🧩 Visualizações SHAP
-
-**🔹 Beeswarm Plot**
-
-![beeswarm](![alt text](image.png))
-
-**🔹 Bar Plot – Importância média das variáveis**
-
-![bar](![alt text](image-1.png))
-
----
-
 ### 💡 Recomendações para o RH
 
 - Reduzir carga de **hora extra**.
