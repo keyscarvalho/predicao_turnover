@@ -2,7 +2,11 @@
 
 ### Sobre o projeto:
 
-Este foi um projeto realizado como parte do Bootcamp [Re]Start Data Girls, da trilha Cientista de Dados. Foi utilizado o dataset “IBM HR Analytics Attrition & Performance”, com objetivo de construir um modelo preditivo que identifique padrões de rotatividade (attrition) e ajude a empresa fictícia Data Girls S.A a prever quais colaboradores têm maior propensão a sair da organização.
+Este foi um projeto realizado como parte do Bootcamp [Re]Start Data Girls, da trilha Cientista de Dados. Foi utilizado o dataset “IBM HR Analytics Attrition & Performance”.
+
+### 🎯 Objetivo:
+
+Construir um modelo preditivo que identifique padrões de rotatividade (attrition) e ajude a empresa fictícia Data Girls S.A a prever quais colaboradores têm maior propensão a sair da organização.
 
 ### Perguntas Norteadoras:
 
@@ -13,65 +17,149 @@ Este foi um projeto realizado como parte do Bootcamp [Re]Start Data Girls, da tr
 
 ---
 
+### 📌 Dados utilizados:
+- **Dataset:** [Kaggle – IBM HR Analytics Employee Attrition](https://www.kaggle.com/datasets/pavansubhasht/ibm-hr-analytics-attrition-dataset)
+- **Amostra:** 1470 funcionários
+- **Variáveis:** 35 colunas
+
+---
+
 ### 📌 Etapas Realizadas
 
-**1. Leitura e Exploração dos Dados**
-- Importação dos dados
-- Exploração inicial dos dados
+**1.Leitura e Exploração Inicial**
 
-**2. Limpeza e Preparação**
-- Lidando com valores nulos ou ausentes
-- Seleciando variáveis mais relevantes
-- Enconding variáveis categóricas
-- Prepando os dados para análise e modelagem
+- Dataset lido e visualizado com ```pandas```.
 
-**3. Análise Exploratória de Dados (EDA):**
-- Avaliando distribuição e relação das variáveis com o alvo
-- Identificando características que contribuem para a rotatividade
+- Verificada a dimensão: 1470 linhas × 35 colunas
+
+- ✅ Nenhum dado nulo presente.
+
+- Distribuição de Attrition:
+
+    - **Não:** 83.9%
+
+    - **Sim:** 16.1% → ⚠️ Classe desbalanceada
+
+**2. Limpeza e Preparação dos Dados**
+
+- Conversão de variáveis categóricas via ```OneHotEncoder```.
+
+- Variáveis como ```EmployeeNumber```, ```Over18```, ```StandardHours``` e ```EmployeeCount``` foram removidas por não agregar valor ao modelo.
+
+- ```StandardScaler``` aplicado para modelos que requerem normalização.
+
+- ```X.shape```: (1470, 44) — após dummies
+
+- ```y.shape```: (1470,) — target binário (```Attrition```)
+
+**3. Análise Exploratória (EDA)**
+
+- Análise univariada e bivariada de variáveis-chave como idade, tempo de empresa, função, estado civil, viagens e horas extras.
+
+- Boxplots, histograms, heatmaps, correlações
+
+- As variáveis com maior correlação com Attrition:
+
+    - 🔺 Positivas: OverTime, MaritalStatus_Single, JobRole_Sales Rep
+
+    - 🔻 Negativas: Age, MonthlyIncome, TotalWorkingYears
 
 **4. Modelagem Preditiva**
-- Treinar a avaliar modelos de machine learning (Regressão Logística e XGBoost)
+
+**Modelos Testados:**
+
+- Regressão Logística (com StandardScaler)
+
+- XGBoost
+
+
+**Tuning de Hiperparâmetros:**
+
+- GridSearchCV (Regressão Logística)
+
+- RandomizedSearchCV (XGBoost)
+
+
+**Melhor Modelo: Regressão Logística com Tuning**
+
+- Recall da classe positiva (Attrition = Yes) = 0.69
+
+- Melhor equilíbrio entre explicabilidade e desempenho
+
+---
 
 **5. Avaliação dos Modelos**
-- Tunar hiperparâmetros e comparar performances por métricas (accuracy, precision, recall, f1-score)
-- Análise dos erros
-- Direcionar recomendações ao RH baseado nos no achados
 
-**6. Interpretação com SHAP**
-- Visualização global e local dos fatores que mais influenciam a decisão do modelo
+🎯 Regressão Logística
 
-### 📌 Dataset: [Kaggle – IBM HR Analytics Employee Attrition](https://www.kaggle.com/datasets/pavansubhasht/ibm-hr-analytics-attrition-dataset)
+| Métric    | **Classe 0** | **Classe 1** | 
+|----------------------    |----------    |
+| Precision | 0.93         | 0.37         | 
+| Recall    | 0.77         | 0.69         | 
+| F1-Score  | 0.84         | 0.48         | 
+| Accuracy  | 0.76         |              | 
+
+🎯 XGBoost
+
+| Métric    | **Classe 0** | **Classe 1** | 
+|-----------------------------------------|
+| Precision | 0.90         | 0.41         | 
+| Recall    | 0.87         | 0.48         | 
+| F1-Score  | 0.88         | 0.44         | 
+| Accuracy  | 0.81         |              |
+
+
+🔍 **Análise de Erros**
+
+**Falsos Positivos (FP):** Funcionários previstos para sair, mas que ficaram → risco de gasto desnecessário com retenção
+
+**Falsos Negativos (FN):** Funcionários previstos para ficar, mas que saíram → impacto direto na perda de talentos
+
+
+🔥 **Explicação com SHAP (Regressão Logística)**
+
+- Gráfico ```SHAP bar``` → mostra variáveis com maior impacto:
+
+    - ```OverTime```, ```NumCompaniesWorked```, ```JobSatisfaction```, ```Age```
+
+- Gráfico ```SHAP waterfall``` → explicação individual (decisão personalizada por funcionário)
 
 ---
 
-## 📊 Resultados
+🧠 **Principais Achados**
 
-| Modelo               | Accuracy | Recall (classe 1) | F1-score (classe 1) |
-|----------------------|----------|-------------------|---------------------|
-| Regressão Logística  | 0.76     | **0.69**          | 0.48                |
-| XGBoost (tuned)      | **0.81** | 0.48              | 0.44                |
+- Funcionários que fazem hora extra ou viajam com frequência têm mais chance de sair.
 
-🔍 Mesmo com menor recall, o XGBoost foi interpretado com SHAP por ser mais complexo e ilustrar o uso de explicabilidade de modelos.
+- Jovens, solteiros e de cargos operacionais estão mais propensos à rotatividade.
 
----
+- Funcionários com maior tempo de empresa, renda e experiência têm menor probabilidade de saída.
 
-### 💡 Recomendações para o RH
+📌 **Recomendações para o RH**
 
-- Reduzir carga de **hora extra**.
-- Melhorar **benefícios financeiros** (como plano de ações).
-- Focar em **jovens talentos** com alto risco de saída.
-- Estimular **vínculo com gestores** e clima organizacional.
-
----
-
-### 🛠️ Tecnologias Utilizadas
-
-**- Python:** Pandas, Numpy, Matplotlib, Seaborn, Scikit-learn, XGBoost, SHAP
-**- Notebook:** VSCode (Jupyter Notebook)
+| Fator de Risco                | Ação Recomendada                       |
+| ----------------------------- | -------------------------------------- |
+| OverTime frequente            | Reavaliar carga horária e bem-estar    |
+| Viagens frequentes            | Oferecer flexibilidade ou compensações |
+| Cargos com alta rotatividade  | Investir em treinamentos e engajamento |
+| Baixa satisfação no trabalho  | Pesquisas de clima e escuta ativa      |
+| Funcionários jovens/solteiros | Criar planos de carreira e retenção    |
 
 ---
 
-## 🙋‍♀️ Autora
+### 🛠️ 📚 Tecnologias utilizadas
 
-**Keylla Souza de Carvalho**  
-Cientista de Dados em formação | Bootcamp [RE]Start 2025
+- ```Python```
+
+- ```Pandas```, ```NumPy```, ```Matplotlib```, ```Seaborn```
+
+- ```Scikit-learn```, ```XGBoost```
+
+- ```SHAP``` para interpretabilidade
+
+- ```Jupyter Notebook```
+
+---
+
+## 🙋‍♀️ Autora:
+
+**Keylla Souza de Carvalho**
