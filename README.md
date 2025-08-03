@@ -92,21 +92,21 @@ Construir um modelo preditivo que identifique padrões de rotatividade (attritio
 
 🎯 Regressão Logística
 
-| Métric    | **Classe 0** | **Classe 1** | 
-|----------------------    |----------    |
-| Precision | 0.93         | 0.37         | 
-| Recall    | 0.77         | 0.69         | 
-| F1-Score  | 0.84         | 0.48         | 
-| Accuracy  | 0.76         |              | 
+| Métrica   | Classe 0 | Classe 1 |
+| --------- | -------- | -------- |
+| Precision | 0.93     | 0.37     |
+| Recall    | 0.77     | **0.69** |
+| F1-Score  | 0.84     | 0.48     |
+| Accuracy  | 0.76     |          |
 
 🎯 XGBoost
 
-| Métric    | **Classe 0** | **Classe 1** | 
-|-----------------------------------------|
-| Precision | 0.90         | 0.41         | 
-| Recall    | 0.87         | 0.48         | 
-| F1-Score  | 0.88         | 0.44         | 
-| Accuracy  | 0.81         |              |
+| Métrica   | Classe 0 | Classe 1 |
+| --------- | -------- | -------- |
+| Precision | 0.90     | 0.41     |
+| Recall    | 0.87     | 0.48     |
+| F1-Score  | 0.88     | 0.44     |
+| Accuracy  | 0.81     |          |
 
 
 🔍 **Análise de Erros**
